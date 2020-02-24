@@ -2,22 +2,22 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	//"github.com/trungnguyengtbt/shopping/app/domain/entities"
-	"log"
-	"os"
+	. "github.com/trungnguyengtbt/core/common/cons"
 )
 
-func Init() *gorm.DB {
-	username := os.Getenv("MYSQL_USER")
-	password := os.Getenv("MYSQL_PASSWORD")
-	dbHost := os.Getenv("MYSQL_HOST")
-	dbPort := os.Getenv("MYSQL_PORT")
-	dbName := os.Getenv("MYSQL_DB")
+func Init(conf DbConfiguration) *gorm.DB {
+	username := conf.DbUsername
+	password := conf.DbPassword
+	dbHost := conf.DbHost
+	dbPort := conf.DbPort
+	dbName := conf.DbName
+	dbDriverName:=conf.DbDriverName//default mysql
 	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, dbHost, dbPort, dbName)
 
-	db, err := gorm.Open("mysql", url)
+	db, err := gorm.Open(dbDriverName, url)
 	//defer db.Close()
 	if err != nil {
 		log.Println(url)

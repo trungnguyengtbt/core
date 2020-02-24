@@ -2,8 +2,8 @@ package validate
 
 import (
 	"fmt"
-	"github.com/labstack/echo"
-	. "github.com/trungnguyengtbt/coreapi/common/models"
+	"github.com/labstack/echo/v4"
+	. "github.com/trungnguyengtbt/core/common/models"
 	"gopkg.in/go-playground/validator.v8"
 	"net/http"
 	"strings"
