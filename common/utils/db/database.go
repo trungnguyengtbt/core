@@ -15,6 +15,8 @@ func Init(conf DbConfiguration) *gorm.DB {
 	dbPort := conf.DbPort
 	dbName := conf.DbName
 	dbDriverName:=conf.DbDriverName//default mysql
+
+	fmt.Printf(dbHost)
 	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, dbHost, dbPort, dbName)
 
 	db, err := gorm.Open(dbDriverName, url)
