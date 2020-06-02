@@ -10,18 +10,20 @@ import (
 	"time"
 )
 
+var MongoClient *mongo.Database
+
 func GetMongoDBClient(conf MongoConfiguration) *mongo.Database {
-	mgUri := conf.MgUri
-	user := conf.MgUserName
-	password := conf.MgPassword
-	dbName := conf.MgDB
-	authSource := conf.MgAuthSource
+	mgUri := conf.MongoUri
+	user := conf.MongoUser
+	password := conf.MongoPassword
+	dbName := conf.MongoDatabase
+	authSource := conf.MongoAuth
 
 	fmt.Println("Connect mongo uri: ", mgUri)
 	clientOptions := options.Client().ApplyURI(mgUri)
 	credential := options.Credential{}
-	credential.AuthMechanism = "SCRAM-SHA-1"
 	if user != "" {
+		credential.AuthMechanism = "SCRAM-SHA-1"
 		fmt.Println("Connect mongo user: ", user)
 		credential.Username = user
 	}
@@ -34,10 +36,10 @@ func GetMongoDBClient(conf MongoConfiguration) *mongo.Database {
 	if authSource != "" {
 		fmt.Println("Connect mongo authSource: ", authSource)
 		credential.AuthSource = authSource
+		// Set the credential clientOptions
+		fmt.Println("credential: ", credential)
+		clientOptions.SetAuth(credential)
 	}
-	// Set the credential clientOptions
-	println("credential: ", credential)
-	clientOptions.SetAuth(credential)
 
 	client, err := mongo.NewClient(clientOptions)
 	if err != nil {
@@ -57,5 +59,6 @@ func GetMongoDBClient(conf MongoConfiguration) *mongo.Database {
 		log.Fatal(err.Error())
 	}
 	clientDatabase := client.Database(dbName)
+	MongoClient = clientDatabase
 	return clientDatabase
 }

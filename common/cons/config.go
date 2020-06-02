@@ -11,10 +11,10 @@ type (
 	}
 
 	MongoConfiguration struct {
-		MgUri        string
-		MgDB         string
-		MgUserName   string
-		MgPassword   string
-		MgAuthSource string
+		MongoUri      string
+		MongoDatabase string
+		MongoUser     string
+		MongoPassword string
+		MongoAuth     string
 	}
 )
